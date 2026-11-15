@@ -1,0 +1,184 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Rhythm Food Court - Complete Smart System</title>
+    <style>
+        * { box-sizing: border-box; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; margin: 0; padding: 0; }
+        body { background-color: #f0f2f5; color: #2d3436; padding-bottom: 50px; }
+        
+        /* Header */
+        header { background: linear-gradient(135deg, #ff4757, #ff6b81); color: white; padding: 25px 15px; text-align: center; box-shadow: 0 4px 12px rgba(0,0,0,0.1); }
+        header h1 { font-size: 28px; margin-bottom: 5px; }
+        header p { font-size: 14px; opacity: 0.95; }
+
+        /* Navigation Bar */
+        nav { display: flex; flex-wrap: wrap; justify-content: center; background: #ffffff; padding: 12px; box-shadow: 0 2px 10px rgba(0,0,0,0.06); position: sticky; top: 0; z-index: 100; gap: 8px; }
+        nav button { background: #f1f2f6; border: none; padding: 10px 18px; font-size: 15px; font-weight: 600; color: #57606f; cursor: pointer; border-radius: 8px; transition: 0.2s; }
+        nav button:hover { background: #dfe4ea; color: #2f3542; }
+        nav button.active { background: #ff4757; color: white; box-shadow: 0 3px 8px rgba(255, 71, 87, 0.3); }
+
+        /* Main Container */
+        .container { max-width: 960px; margin: 25px auto; padding: 0 15px; }
+        .section { display: none; background: white; padding: 25px; border-radius: 12px; box-shadow: 0 4px 20px rgba(0,0,0,0.05); }
+        .section.active { display: block; animation: fadeIn 0.3s ease; }
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(5px); } to { opacity: 1; transform: translateY(0); } }
+
+        h2 { color: #ff4757; margin-bottom: 6px; font-size: 22px; }
+        .subtitle { color: #747d8c; font-size: 14px; margin-bottom: 20px; border-bottom: 1px solid #f1f2f6; padding-bottom: 12px; }
+
+        /* Buttons */
+        .btn { background: #ff4757; color: white; border: none; padding: 12px 18px; border-radius: 8px; cursor: pointer; font-weight: bold; font-size: 15px; transition: 0.2s; }
+        .btn:hover { background: #e84118; }
+        .btn-full { width: 100%; }
+        .btn-green { background: #2ed573; }
+        .btn-green:hover { background: #26af61; }
+        .btn-dark { background: #2f3542; }
+        .btn-dark:hover { background: #1e272e; }
+
+        /* Menu Grid */
+        .menu-top { display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 10px; margin-bottom: 20px; }
+        .menu-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(210px, 1fr)); gap: 16px; }
+        .menu-card { border: 1px solid #dfe4ea; padding: 18px; border-radius: 10px; text-align: center; background: #ffffff; transition: 0.2s; }
+        .menu-card:hover { border-color: #ff4757; transform: translateY(-3px); box-shadow: 0 6px 15px rgba(0,0,0,0.06); }
+        .counter-tag { display: inline-block; padding: 4px 10px; font-size: 11px; border-radius: 20px; background: #ffeaa7; color: #d35400; font-weight: bold; margin-bottom: 8px; }
+        .price { font-size: 20px; font-weight: bold; color: #2ed573; margin: 10px 0; }
+
+        /* Cart Box */
+        .cart-box { background: #fff9f0; border: 2px solid #ffeaa7; padding: 20px; border-radius: 10px; margin-top: 25px; }
+        .cart-list { list-style: none; margin: 12px 0; }
+        .cart-list li { display: flex; justify-content: space-between; padding: 8px 0; border-bottom: 1px dashed #ced6e0; }
+
+        /* Forms */
+        .form-group { margin-bottom: 16px; }
+        label { display: block; margin-bottom: 6px; font-weight: 600; font-size: 14px; color: #2f3542; }
+        input, select { width: 100%; padding: 12px; border: 1px solid #ced6e0; border-radius: 8px; font-size: 15px; }
+        input:focus, select:focus { outline: none; border-color: #ff4757; }
+
+        /* Token Card */
+        .token-result { background: #e8f8f5; border: 2px dashed #1abc9c; padding: 25px; border-radius: 12px; text-align: center; margin-top: 25px; display: none; }
+        .token-code { font-size: 54px; font-weight: 800; color: #16a085; letter-spacing: 2px; margin: 10px 0; }
+        .stats-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; background: white; padding: 15px; border-radius: 8px; margin: 15px 0; }
+        .stat-item strong { display: block; font-size: 22px; color: #2f3542; }
+        .stat-item span { font-size: 12px; color: #747d8c; }
+
+        /* Live Status & Staff Board */
+        .status-screen { background: #2f3542; color: white; padding: 25px; border-radius: 12px; text-align: center; margin-bottom: 20px; }
+        .serving-big { font-size: 50px; font-weight: bold; color: #ffa502; margin: 10px 0; }
+        .metrics-row { display: flex; justify-content: center; gap: 40px; margin-top: 15px; padding-top: 15px; border-top: 1px solid #57606f; }
+        
+        .queue-list { list-style: none; }
+        .queue-list li { background: #f8f9fa; padding: 12px 15px; border-radius: 8px; margin-bottom: 8px; display: flex; justify-content: space-between; align-items: center; border-left: 4px solid #ff4757; }
+
+        footer { text-align: center; margin-top: 30px; color: #747d8c; font-size: 13px; }
+    </style>
+</head>
+<body>
+
+<header>
+    <h1>🍽 Rhythm Food Court</h1>
+    <p>Smart Menu, Ordering & Queue Management System</p>
+</header>
+
+<nav>
+    <button id="tab-menu" class="nav-btn active" onclick="openTab('menu-sec', 'tab-menu')">🍔 Menu & Order</button>
+    <button id="tab-token" class="nav-btn" onclick="openTab('token-sec', 'tab-token')">🎟 Get Token</button>
+    <button id="tab-status" class="nav-btn" onclick="openTab('status-sec', 'tab-status')">📺 Queue Status</button>
+    <button id="tab-staff" class="nav-btn" onclick="openTab('staff-sec', 'tab-staff')">👨‍🍳 Staff Dashboard</button>
+</nav>
+
+<div class="container">
+
+    <!-- 1. MENU & ORDER SECTION -->
+    <div id="menu-sec" class="section active">
+        <div class="menu-top">
+            <div>
+                <h2>🍽 Rhythm Food Court Menu</h2>
+                <p style="color:#747d8c; font-size:14px;">Select your favorite items · Prices in ₹</p>
+            </div>
+            <button class="btn btn-dark" onclick="goToCart()">🛒 View Order (<span id="cart-badge">0</span>)</button>
+        </div>
+
+        <div class="menu-grid" id="menu-grid"></div>
+
+        <!-- Cart Summary -->
+        <div class="cart-box" id="cart-section">
+            <h3>🧾 Your Order Summary</h3>
+            <ul class="cart-list" id="cart-list">
+                <li style="color:#747d8c;">No items added yet. Click "+ Add to Order" above.</li>
+            </ul>
+            <div style="display:flex; justify-content:space-between; align-items:center; margin-top:15px; font-size:18px;">
+                <strong>Total Payable:</strong>
+                <strong style="color:#ff4757;">₹<span id="cart-total">0</span></strong>
+            </div>
+            <div style="display:flex; gap:10px; margin-top:15px;">
+                <button class="btn btn-green btn-full" onclick="checkoutToToken()">Confirm Order & Get Queue Token ➔</button>
+                <button class="btn btn-dark" onclick="emptyCart()">Clear</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- 2. GET TOKEN SECTION -->
+    <div id="token-sec" class="section">
+        <h2>🎟 Get Your Queue Token</h2>
+        <p class="subtitle">Enter your details and choose the counter. Your token will be generated automatically.</p>
+
+        <div class="form-group">
+            <label>Student Name *</label>
+            <input type="text" id="inpName" placeholder="Enter your name">
+        </div>
+        <div class="form-group">
+            <label>Roll Number (Optional)</label>
+            <input type="text" id="inpRoll" placeholder="Eg: 24CS101">
+        </div>
+        <div class="form-group">
+            <label>Choose Counter *</label>
+            <select id="inpCounter">
+                <option value="Food">Food Counter (Counter 1)</option>
+                <option value="Snacks">Snacks Counter (Counter 2)</option>
+                <option value="Juice">Juice Counter (Counter 3)</option>
+            </select>
+        </div>
+
+        <button class="btn btn-full" onclick="createToken()">Generate My Token</button>
+
+        <!-- Generated Token Display -->
+        <div class="token-result" id="tokenBox">
+            <h3 style="color:#16a085;">✅ Token Generated</h3>
+            <div class="token-code" id="outToken">A001</div>
+            <p id="outDetails" style="font-weight:600; color:#2f3542;"></p>
+            
+            <div class="stats-grid">
+                <div class="stat-item">
+                    <strong id="outAhead">0</strong>
+                    <span>People ahead</span>
+                </div>
+                <div class="stat-item">
+                    <strong id="outWait">0</strong>
+                    <span>Est. wait (min)</span>
+                </div>
+                <div class="stat-item">
+                    <strong id="outCounterNo">1</strong>
+                    <span>Counter</span>
+                </div>
+            </div>
+            <p style="font-size:13px; color:#57606f;">Keep this token number and watch the Queue Status page.</p>
+        </div>
+    </div>
+
+    <!-- 3. LIVE QUEUE STATUS SECTION -->
+    <div id="status-sec" class="section">
+        <h2>📺 Live Queue Status</h2>
+        <p class="subtitle">Check currently serving token and waiting list in real-time.</p>
+
+        <div class="form-group">
+            <label>Select Counter</label>
+            <select id="statusCounterSel" onchange="updateStatusView()">
+                <option value="Food">Food Counter</option>
+                <option value="Snacks">Snacks Counter</option>
+                <option value="Juice">Juice Counter</option>
+            </select>
+        </div>
+
+        <div class="status-screen">
